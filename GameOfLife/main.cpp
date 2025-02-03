@@ -16,8 +16,8 @@ int gScreenHeight{ 600 };
 int gTimeDelayMS{ 100 };
 
 // Maze size as constants
-constexpr int kGridColumnsX{ 20 };
-constexpr int kGridRowsY{ 20 };
+constexpr int kGridColumnsX{ 40 };
+constexpr int kGridRowsY{ 40 };
 
 char logicMap[kGridRowsY][kGridColumnsX];
 char displayMap[kGridRowsY][kGridColumnsX];
@@ -88,86 +88,36 @@ int main()
 			for (int x = 0; x < kGridColumnsX; x++)
 			{
 				int liveNeighbours = 0;
-				if (logicMap[y][x] == 'C')
+				
+				for (int yCheck = -1; yCheck <= 1; yCheck++)
 				{
-					if (logicMap[y + 1][x - 1] == 'C')
+					for (int xCheck = -1; xCheck <= 1; xCheck++)
 					{
-						liveNeighbours++;
+						if (xCheck != 0 || yCheck != 0)
+						{
+							int neighbourY = y + yCheck;
+							int neighbourX = x + xCheck;
+							if (neighbourY >= 0 && neighbourY < kGridRowsY && neighbourX >= 0 && neighbourX < kGridColumnsX)
+							{
+								if (displayMap[neighbourY][neighbourX] == 'C')
+								{
+									liveNeighbours++;
+								}
+							}
+						}
 					}
-					if (logicMap[y + 1][x] == 'C')
-					{
-						liveNeighbours++;
-					}
-					if (logicMap[y + 1][x + 1] == 'C')
-					{
-						liveNeighbours++;
-					}
-					if (logicMap[y][x - 1] == 'C')
-					{
-						liveNeighbours++;
-					}
-					if (logicMap[y][x + 1] == 'C')
-					{
-						liveNeighbours++;
-					}
-					if (logicMap[y - 1][x - 1] == 'C')
-					{
-						liveNeighbours++;
-					}
-					if (logicMap[y - 1][x] == 'C')
-					{
-						liveNeighbours++;
-					}
-					if (logicMap[y - 1][x + 1] == 'C')
-					{
-						liveNeighbours++;
-					}
+				}
 
-					if (liveNeighbours < 2) // Underpopulation
-					{
-						logicMap[y][x] = '.';
-					}
-					else if (liveNeighbours > 3) // Overpopulation
+				if (displayMap[y][x] == 'C')
+				{
+					if (liveNeighbours < 2 || liveNeighbours > 3)
 					{
 						logicMap[y][x] = '.';
 					}
 				}
-				else if (logicMap[y][x] == '.')
+				else if (displayMap[y][x] == '.')
 				{
-					if (logicMap[y + 1][x - 1] == 'C')
-					{
-						liveNeighbours++;
-					}
-					if (logicMap[y + 1][x] == 'C')
-					{
-						liveNeighbours++;
-					}
-					if (logicMap[y + 1][x + 1] == 'C')
-					{
-						liveNeighbours++;
-					}
-					if (logicMap[y][x - 1] == 'C')
-					{
-						liveNeighbours++;
-					}
-					if (logicMap[y][x + 1] == 'C')
-					{
-						liveNeighbours++;
-					}
-					if (logicMap[y - 1][x - 1] == 'C')
-					{
-						liveNeighbours++;
-					}
-					if (logicMap[y - 1][x] == 'C')
-					{
-						liveNeighbours++;
-					}
-					if (logicMap[y - 1][x + 1] == 'C')
-					{
-						liveNeighbours++;
-					}
-
-					if (liveNeighbours == 3) // Reproduction
+					if (liveNeighbours == 3)
 					{
 						logicMap[y][x] = 'C';
 					}
