@@ -83,12 +83,13 @@ int main()
 	{
 		drawMap();
 
+		// Iterates through the grid
 		for (int y = 0; y < kGridRowsY; y++)
 		{
 			for (int x = 0; x < kGridColumnsX; x++)
 			{
+				// Checks the current cell's neighbours
 				int liveNeighbours = 0;
-				
 				for (int yCheck = -1; yCheck <= 1; yCheck++)
 				{
 					for (int xCheck = -1; xCheck <= 1; xCheck++)
@@ -99,6 +100,7 @@ int main()
 							int neighbourX = x + xCheck;
 							if (neighbourY >= 0 && neighbourY < kGridRowsY && neighbourX >= 0 && neighbourX < kGridColumnsX)
 							{
+								// If their neighbour is alive; increments the variable
 								if (displayMap[neighbourY][neighbourX] == 'C')
 								{
 									liveNeighbours++;
@@ -108,14 +110,14 @@ int main()
 					}
 				}
 
-				if (displayMap[y][x] == 'C')
+				if (displayMap[y][x] == 'C') // Underpopulation and Overpopulation rules
 				{
 					if (liveNeighbours < 2 || liveNeighbours > 3)
 					{
 						logicMap[y][x] = '.';
 					}
 				}
-				else if (displayMap[y][x] == '.')
+				else if (displayMap[y][x] == '.') // Reproduction
 				{
 					if (liveNeighbours == 3)
 					{
