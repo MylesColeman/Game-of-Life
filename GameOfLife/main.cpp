@@ -6,6 +6,7 @@
 #include "Framework.h"
 #include <fstream>
 #include <string>
+#include <cmath>
 using namespace std;
 
 // Screen dimensions
@@ -26,14 +27,17 @@ ofstream output;
 ifstream input;
 string fileName = "blankMap";
 
+int cellWidth = gScreenWidth / kGridColumnsX;
+int cellHeight = gScreenHeight / kGridRowsY;
+
 void drawMap()
 {
 	for (int y = 0; y < kGridRowsY; y++)
 	{
 		for (int x = 0; x < kGridColumnsX; x++)
 		{
-			int cellWidth = gScreenWidth / kGridColumnsX;
-			int cellHeight = gScreenHeight / kGridRowsY;
+			cellWidth = gScreenWidth / kGridColumnsX;
+			cellHeight = gScreenHeight / kGridRowsY;
 			int cellPosX = x * cellWidth;
 			int cellPosY = y * cellHeight;
 
@@ -73,8 +77,57 @@ void loadMap(string fileName)
 	}
 }
 
+int aPointX = 0;
+int bPointX = 0;
+int aPointY = 0;
+int bPointY = 0;
+void drawLine()
+{
+	void GetMousePosition(int& x, int& y);
+	int mouseX, mouseY;
+	GetMousePosition(mouseX, mouseY);
+	
+	if (IsButtonPressed(EButton::eLeft)) // Checks for point A - for the line
+	{
+		aPointX = mouseX / cellWidth;
+		aPointY = mouseY / cellHeight;
+
+		logicMap[aPointY][aPointX] = 'C';
+	}
+	else if (IsButtonPressed(EButton::eRight)) // Checks for point B - for the line
+	{
+		bPointX = mouseX / cellWidth;
+		bPointY = mouseY / cellHeight;
+
+		logicMap[bPointY][bPointX] = 'C';
+	}
+	int xDifference = aPointX - bPointX;
+	int yDifference = aPointY - bPointY;
+
+	int decision = 2 * yDifference - xDifference;
+
+	for (int i = aPointX; i < bPointX; i++)
+	{
+		logicMap[aPointY][aPointX] = 'C';
+
+		aPointX += 1;
+
+		if (decision > 0)
+		{
+			aPointY += 1;
+			decision += 2 * (yDifference - xDifference);
+		}
+		else
+		{
+			decision += 2 * yDifference;
+		}
+	}
+}
+
 int main()
 {
+	bool IsButtonPressed(EButton whichButton);
+
 	loadMap(fileName);
 
 	memcpy(displayMap, logicMap, sizeof(bool) * kGridRowsY * kGridColumnsX);
@@ -83,49 +136,7 @@ int main()
 	{
 		drawMap();
 
-		// Iterates through the grid
-		for (int y = 0; y < kGridRowsY; y++)
-		{
-			for (int x = 0; x < kGridColumnsX; x++)
-			{
-				// Checks the current cell's neighbours
-				int liveNeighbours = 0;
-				for (int yCheck = -1; yCheck <= 1; yCheck++)
-				{
-					for (int xCheck = -1; xCheck <= 1; xCheck++)
-					{
-						if (xCheck != 0 || yCheck != 0)
-						{
-							int neighbourY = y + yCheck;
-							int neighbourX = x + xCheck;
-							if (neighbourY >= 0 && neighbourY < kGridRowsY && neighbourX >= 0 && neighbourX < kGridColumnsX)
-							{
-								// If their neighbour is alive; increments the variable
-								if (displayMap[neighbourY][neighbourX] == 'C')
-								{
-									liveNeighbours++;
-								}
-							}
-						}
-					}
-				}
-
-				if (displayMap[y][x] == 'C') // Underpopulation and Overpopulation rules
-				{
-					if (liveNeighbours < 2 || liveNeighbours > 3)
-					{
-						logicMap[y][x] = '.';
-					}
-				}
-				else if (displayMap[y][x] == '.') // Reproduction
-				{
-					if (liveNeighbours == 3)
-					{
-						logicMap[y][x] = 'C';
-					}
-				}
-			}
-		}
+		drawLine();
 
 		memcpy(displayMap, logicMap, sizeof(bool) * kGridRowsY * kGridColumnsX);
 	}
