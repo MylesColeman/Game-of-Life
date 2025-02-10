@@ -77,13 +77,15 @@ void loadMap(string fileName)
 	}
 }
 
-int aPointX = 0;
-int bPointX = 0;
-int aPointY = 0;
-int bPointY = 0;
+int aPointX = -1;
+int bPointX = -1;
+int aPointY = -1;
+int bPointY = -1;
+
+bool pointASet = false;
+bool pointBSet = false;
 void drawLine()
 {
-	void GetMousePosition(int& x, int& y);
 	int mouseX, mouseY;
 	GetMousePosition(mouseX, mouseY);
 	
@@ -92,6 +94,8 @@ void drawLine()
 		aPointX = mouseX / cellWidth;
 		aPointY = mouseY / cellHeight;
 
+		pointASet = true;
+
 		logicMap[aPointY][aPointX] = 'C';
 	}
 	else if (IsButtonPressed(EButton::eRight)) // Checks for point B - for the line
@@ -99,28 +103,42 @@ void drawLine()
 		bPointX = mouseX / cellWidth;
 		bPointY = mouseY / cellHeight;
 
+		pointBSet = true;
+
 		logicMap[bPointY][bPointX] = 'C';
 	}
-	int xDifference = aPointX - bPointX;
-	int yDifference = aPointY - bPointY;
 
-	int decision = 2 * yDifference - xDifference;
-
-	for (int i = aPointX; i < bPointX; i++)
+	if (pointASet && pointBSet)
 	{
-		logicMap[aPointY][aPointX] = 'C';
+		int xDifference = abs(aPointX - bPointX);
+		int yDifference = abs(aPointY - bPointY);
+		int stepX = (aPointX < bPointX) ? 1 : -1;
+		int stepY = (aPointY < bPointY) ? 1 : -1;
+		int errorCheck = xDifference - yDifference;
 
-		aPointX += 1;
+		while (true)
+		{
+			logicMap[aPointY][aPointX] = 'C';
 
-		if (decision > 0)
-		{
-			aPointY += 1;
-			decision += 2 * (yDifference - xDifference);
+			if (aPointX == bPointX && aPointY == bPointY)
+			{
+				break;
+			}
+			int errorDouble = 2 * errorCheck;
+			if (errorDouble > -yDifference)
+			{
+				errorCheck -= yDifference;
+				aPointX += stepX;
+			}
+			if (errorDouble < xDifference)
+			{
+				errorCheck += xDifference;
+				aPointY += stepY;
+			}
 		}
-		else
-		{
-			decision += 2 * yDifference;
-		}
+
+		pointASet = false;
+		pointBSet = false;
 	}
 }
 
