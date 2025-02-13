@@ -98,7 +98,7 @@ void drawLine()
 
 		logicMap[aPointY][aPointX] = 'C';
 	}
-	else if (IsButtonPressed(EButton::eRight)) // Checks for point B - for the line
+	else if (pointASet && IsButtonPressed(EButton::eRight)) // Checks for point B - for the line
 	{
 		bPointX = mouseX / cellWidth;
 		bPointY = mouseY / cellHeight;
@@ -108,7 +108,7 @@ void drawLine()
 		logicMap[bPointY][bPointX] = 'C';
 	}
 
-	if (pointASet && pointBSet)
+	if (pointBSet)
 	{
 		int xDifference = abs(aPointX - bPointX);
 		int yDifference = abs(aPointY - bPointY);
@@ -136,8 +136,6 @@ void drawLine()
 				aPointY += stepY;
 			}
 		}
-
-		pointASet = false;
 		pointBSet = false;
 	}
 }
