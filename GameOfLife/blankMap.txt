@@ -32,9 +32,9 @@
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L
+L R R R R L G G G G L B B B B L W W W W L . . . . . . W W W W W W W L . . . . L
+L R R R R L G G G G L B B B B L W W W W L . . . . . . W W W W W W W L . . . . L
+L R R R R L G G G G L B B B B L W W W W L W W W W W W W W W W W W W L . . . . L
+L R R R R L G G G G L B B B B L W W W W L W W W W W W W W W W W W W L . . . . L
+L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L L
