@@ -41,6 +41,7 @@ void drawMap()
 			int cellPosX = x * cellWidth;
 			int cellPosY = y * cellHeight;
 
+			// Changes the rectangles dependent on what is being drawn
 			if (displayMap[y][x] == 'W')
 			{
 				ChangeColour(255, 255, 255);
@@ -123,6 +124,7 @@ void drawLine()
 			pointASet = true;
 
 			logicMap[aPointY][aPointX] = brushColour;
+			// If the large brush is being used creates an extra rectangle around the click, if not out of bounds
 			if (brushSize == 2)
 			{
 				logicMap[aPointY - 1][aPointX] = brushColour;
@@ -148,6 +150,7 @@ void drawLine()
 			pointBSet = true;
 
 			logicMap[bPointY][bPointX] = brushColour;
+			// If the large brush is being used creates an extra rectangle around the click, if not out of bounds
 			if (brushSize == 2)
 			{
 				logicMap[bPointY - 1][bPointX] = brushColour;
@@ -166,7 +169,7 @@ void drawLine()
 			}
 		}
 
-		if (pointBSet)
+		if (pointBSet) // Ensures point A was created before point B
 		{
 			int xDifference = abs(aPointX - bPointX);
 			int yDifference = abs(aPointY - bPointY);
@@ -174,7 +177,7 @@ void drawLine()
 			int stepY = (aPointY < bPointY) ? 1 : -1;
 			int errorCheck = xDifference - yDifference;
 
-			while (true)
+			while (true) // Bresenham's Line Algorithm logic
 			{
 				logicMap[aPointY][aPointX] = brushColour;
 				if (brushSize == 2)
@@ -215,6 +218,7 @@ void drawLine()
 	}
 	else
 	{
+		// Takes mouse input to check if the paint or brush is being changed
 		if (IsButtonPressed(EButton::eLeft) || IsButtonPressed(EButton::eRight))
 		{
 			if (mouseY / cellHeight >= 35 && mouseY / cellHeight <= 38)
@@ -266,7 +270,7 @@ int main()
 
 	loadMap(fileName);
 
-	memcpy(displayMap, logicMap, sizeof(bool) * kGridRowsY * kGridColumnsX);
+	memcpy(displayMap, logicMap, sizeof(bool) * kGridRowsY * kGridColumnsX); // Swaps the logic and display map so only one handles logic
 
 	cout << "White Paint" << endl;
 	cout << "Small Brush" << endl;
@@ -277,7 +281,7 @@ int main()
 
 		drawLine();
 
-		memcpy(displayMap, logicMap, sizeof(bool) * kGridRowsY * kGridColumnsX);
+		memcpy(displayMap, logicMap, sizeof(bool) * kGridRowsY * kGridColumnsX); // Swaps the logic and display map so only one handles logic
 	}
 
 	return 0;
